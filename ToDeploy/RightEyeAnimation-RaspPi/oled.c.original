@@ -1,0 +1,202 @@
+/***************************************************
+//Web: http://www.buydisplay.com
+EastRising Technology Co.,LTD
+Examples for ER-OLEDM0.95-2C
+Display is Hardward SPI 4-Wire SPI Interface 
+Tested and worked with: 
+Works with Raspberry pi
+****************************************************/
+
+#include <bcm2835.h>
+#include <stdio.h>
+#include <time.h>
+#include "ssd1351.h"
+
+char value[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+int main(int argc, char **argv)
+{
+    time_t now;
+    struct tm *timenow;
+    FILE *pFile ;
+    /* 1 pixel of 888 bitmap = 3 bytes */
+    size_t pixelSize = 3;
+    unsigned char bmpBuffer[OLED_WIDTH * OLED_HEIGHT * 3];
+
+    if(!bcm2835_init())
+    {
+        return -1;
+    }
+
+ 
+
+
+  
+    SSD1351_begin();
+    SSD1351_mono_bitmap(0, 0, mono_bmp, 128, 128, GREEN);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+
+   
+    pFile = fopen("pic1.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+  
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+	pFile = fopen("kitten.jpg", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+   pFile = fopen("pic2.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+	pFile = fopen("kitten.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+	
+   pFile = fopen("pic3.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+   pFile = fopen("pic4.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+   pFile = fopen("pic5.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+
+   pFile = fopen("pic6.bmp", "r");
+
+   if (pFile == NULL) {
+        printf("file not exist\n");
+        return 0;
+    }
+
+    fseek(pFile, 54, 0);
+    fread(bmpBuffer, pixelSize, OLED_WIDTH * OLED_HEIGHT, pFile);
+    fclose(pFile);
+
+    SSD1351_bitmap24(0, 0, bmpBuffer, 128, 128);
+    SSD1351_display();
+    bcm2835_delay(2000);
+
+
+    SSD1351_clear();
+    printf("OLED example. Press Ctrl + C to exit.\n");
+
+    uint16_t i=100;
+    while(1)
+    {
+        time(&now);
+        timenow = localtime(&now);
+
+        SSD1351_mono_bitmap(0, 2, Signal816, 16, 8, GOLDEN); 
+        SSD1351_mono_bitmap(24, 2, Msg816, 16, 8, GOLDEN); 
+        SSD1351_mono_bitmap(40, 2, Bluetooth88, 8, 8, GOLDEN); 
+        SSD1351_mono_bitmap(64, 2, GPRS88, 8, 8, GOLDEN); 
+        SSD1351_mono_bitmap(90, 2, Alarm88, 8, 8, GOLDEN); 
+        SSD1351_mono_bitmap(112, 2, Bat816, 16, 8, GOLDEN); 
+
+        SSD1351_string(0, 112, "Booby", 16, 0, WHITE); 
+        SSD1351_string(94, 112, "Cutie", 16, 1, GOLDEN); 
+
+
+        SSD1351_char(0, 40, value[timenow->tm_hour / 10], 16, 1,RED);
+        SSD1351_char(16, 40, value[timenow->tm_hour % 10], 16, 1,RED);
+        SSD1351_char(32, 40, ':' , 16, 1,WHITE);
+        SSD1351_char(48, 40, value[timenow->tm_min / 10], 16, 1, GREEN);
+        SSD1351_char(64, 40, value[timenow->tm_min % 10], 16, 1, GREEN);
+        SSD1351_char(80, 40, ':' , 16, 1,WHITE);
+        SSD1351_char(96, 40, value[timenow->tm_sec / 10], 16, 1, BLUE);
+        SSD1351_char(112, 40, value[timenow->tm_sec % 10], 16, 1, BLUE);
+
+        SSD1351_string(6, 80, "buydisplay.com", 16, 1,i);
+	i+=1000; if(i>=65536)i=1000;
+    
+        SSD1351_display();
+      
+    }
+    bcm2835_spi_end();
+    bcm2835_close();
+    return 0;
+}
+

@@ -1,0 +1,25 @@
+Display Source:
+https://www.buydisplay.com/full-color-1-5-inch-arduino-raspberry-pi-oled-display-module-128x128
+
+OS Source:
+https://www.raspberrypi.org/downloads/raspberry-pi-os/
+Prereqs:
+0)	Intall a fresh installation of Raspberry Pi OS onto the MicroSD Card:
+
+Installation:
+1)	Install the C libraries of bcm2835, see: http://www.airspayce.com/mikem/bcm2835/.
+	wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.64.tar.gz
+	#download the latest version of the library, say bcm2835-1.xx.tar.gz, then:
+	tar zxvf bcm2835-1.xx.tar.gz
+	cd bcm2835-1.xx
+	./configure
+	make
+	sudo make check
+	sudo make install
+2)	Move into the package where you will be playing the animation. This should contain the Makefile and oled.c file.
+3)	Clean the file with: 
+	make clean
+4)	Compile the file with: 
+	make 
+5)	Run the demo with: 
+	sudo ./oled

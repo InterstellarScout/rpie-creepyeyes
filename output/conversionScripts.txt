@@ -1,0 +1,47 @@
+#####Convert 128x128 png's to bmp's##########
+#!/bin/bash
+# Convert 100 images into bmp
+currentDirectory=`pwd`
+
+counter=0
+while [ $counter -le 100 ]
+do
+echo $counter
+mv ${currentDirectory}/frame_${counter}_delay-0.04s.png ${currentDirectory}/CreepyEyes${counter}.png
+convert -verbose -depth 24 -type truecolor -units PixelsPerInch -density 72 -compress None -depth 24 ${currentDirectory}/CreepyEyes${counter}.png ${currentDirectory}/output/CreepyEyes${counter}.bmp
+#convert -verbose -depth 24 -type truecolor -units PixelsPerInch -density 72 -compress None -depth 24 /mnt/c/Users/das09/Downloads/EyeImages/CreepyEyes44.png /mnt/c/Users/das09/Downloads/EyeImages/output/CreepyEyes44.bmp #Single
+((counter++))
+done
+echo All done
+
+
+
+#####Append script to C File##########
+
+#!/bin/bash
+# Convert 100 images into bmp
+
+currentDirectory=`pwd`
+
+counter=0
+while [ $counter -le 100 ]
+do
+echo $counter
+echo pFile = fopen\(\"images/CreepyEyes${counter}.bmp\", \"r\"\)\; >> ${currentDirectory}/output/oled.c 
+echo if \(pFile == NULL\) {  >> ${currentDirectory}/output/oled.c 
+echo printf\(\"file not exist\"\)\; >> ${currentDirectory}/output/oled.c 
+echo return 0\; >> ${currentDirectory}/output/oled.c 
+echo } >> ${currentDirectory}/output/oled.c 
+  
+echo fseek\(pFile, 54, 0\)\; >> ${currentDirectory}/output/oled.c 
+echo fread\(bmpBuffer, pixelSize, OLED_WIDTH \* OLED_HEIGHT, pFile\)\; >> ${currentDirectory}/output/oled.c 
+echo fclose\(pFile\)\; >> ${currentDirectory}/output/oled.c 
+
+echo SSD1351_bitmap24\(0, 0, bmpBuffer, standardSize, standardSize\)\; >> ${currentDirectory}/output/oled.c 
+echo SSD1351_display\(\)\; >> ${currentDirectory}/output/oled.c 
+echo bcm2835_delay\(speed\)\; >> ${currentDirectory}/output/oled.c 
+echo //\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#// >> ${currentDirectory}/output/oled.c 
+((counter++))
+done
+echo }} >> ${currentDirectory}/output/oled.c 
+echo All done
